@@ -4,15 +4,15 @@ var fs = require('fs');
 var colorDot = ['online', 'idle', 'dnd'];
 var stati = ['online <:gdot:515555085078495243>', 'idle <:ydot:515555085166706728>', 'do not disturb <:rdot:515555085158449201>'];
 var ptlw = [':video_game: playing :video_game:', ':movie_camera: streaming :movie_camera:', ':headphones: listening to :headphones:', ':eyes: watching :eyes:'];
-var disconnect = ['Do you... not love me anymore?', 'For how long though?', 'Why tho', 'I hate you too mate', 'UPGRADE TIME?'];
+var disconnect = ['Do you... not love me anymore?', 'For how long though?', 'Why tho', 'I hate you too mate', 'UPGRADE TIME?', 'Back to my corner I guess.', 'I guess you lame dawgs cannot deal with a party animal such as myself.\nI am outta here.','_**Is this the end for our caped crusader?**_\n_**Will the knots win?**_\n_**Tune in next time on Yo-Yo Random Stangers!**_'];
 var caseMess = '';
 var roleList = ['Create Instant Invite','Kick Members','Ban Members','Administrator','Manage Channels','Manage Server','Add Reactions','View Audit Log','Priority Speaker','Error 512','View Channels','Send Messages','Send TTS Messages','Manage Messages','Embed Links','Attach Files','Read Message History','Mention Everyone','Use External Emojis','Error 524288','Connect','Speak','Mute Members','Deafen Members','Use Members','Use Voice Activity','Change Nickname','Manage Nicknames','Manage Roles','Manage Webhooks','Manage Emojis']
 var prevDay;
 var day;
 var monthNumbers = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-var playing = ['Yoyo simulator'];
-var listening = ['the screams of orphans'];
-var watching = ['you cry'];
+var playing = ['Yoyo simulator', 'God', 'Cat and Mouse', 'With the Past', 'With Physics'];
+var listening = ['the screams of orphans', 'the voices in my head', 'the haters'];
+var watching = ['you cry', 'the sun bake'];
 var levels = [['Put on and adjust string','Wind string','Basic throw','Around the corner','Walk the dog','The creeper','The elevator'],
 							['Throw the baby','Itzy-Bitzy baby','Jamacain flag','Rock the baby','One handed star','Eiffel Tower','Spelling Yo','The cross','Big Tokyo tower','Two handed star','3D spaceship','British flag','Four-Leaf clover','Rock the baby on the Eiffel Tower','Dog bite','Darth Vader.'],
 							['Breakaway','Terminology','Man on flying trapeze','Man on flying trapeze corrections','Pinwheel','Brain scrambler','Brain twister','Reverse flip front mount','Side mount flips','Split bottom mount','Man on the flying trapeze and his brother','Double or nothing','Houdini mount','Under or nothing','One and a half side mount','Brent','Cross arm trapeze','Crazy 8','Kamikaze mount','Wrist mount'],
@@ -22,6 +22,9 @@ var levels = [['Put on and adjust string','Wind string','Basic throw','Around th
 							['none']];
 var links = ['https://yoyotricks.com/yoyo-tricks/beginner-tricks/','https://yoyotricks.com/yoyo-tricks/picture-tricks/','https://yoyotricks.com/yoyo-tricks/string-trick-basics/','https://yoyotricks.com/yoyo-tricks/string-tricks/','https://yoyotricks.com/yoyo-tricks/unresponsive/','https://yoyotricks.com/yoyo-tricks/long-string-tricks/','none'];
 var roll = ['486667008881197066','486668435615383553','486668437360476177','486668450354429952','486668447833391137','486668446428299274','491801015436181504'];
+var trickCom = ['level']
+var imporCom = ['pin']
+var infoCom = ['help','roleInfo']
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -127,6 +130,15 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 				});
 			});
 		break;
+	case 'PIN':
+            bot.sendMessage({
+                to: channelID,
+                message: caseMess.substring(7, caseMess.length) + '\n\n-' + bot.fixMessage("<@" + userID + ">").substring(1, bot.fixMessage("<@" + userID + ">").length)
+            }, function(err, res) {
+                bot.pinMessage({
+                    channelID: channelID,
+                    messageID: res.id})})
+        break;
         case 'ROLEINFO':
             var permi = 0
             if (message.substring(10, 13) == '<@&'){
@@ -322,6 +334,66 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     to: channelID,
                     message: 'Pong!'
                 });
+            break;
+		case 'HELP':
+                if (message == 'HELP'){
+                    var parta = ''
+                    var partb = ''
+                    var partc = ''
+                    a = 0
+                    while (a < trickCom.length || a < infoCom.length || a < imporCom.length){
+                        if (a < trickCom.length){
+                            parta = parta + ' `' + trickCom[a] + '`'
+                        }
+                        if (a < infoCom.length){
+                            partb = partb + ' `' + infoCom[a] + '`'
+                        }
+                        if (a < imporCom.length){
+                            partc = partc + ' `' + imporCom[a] + '`'
+                        }
+                        a = a + 1
+                    }
+                    bot.sendMessage({
+                        to: channelID,
+                        embed: {
+                            title: 'This is the help section. Add `yo` to a command to use it.',
+                            color: 3050971,
+                            fields: [
+                                {
+                                    name: 'Help with tricks',
+                                    value: parta,
+                                },
+                                {
+                                    name: 'Informational Commands',
+                                    value: partb,
+                                },
+                                {
+                                    name: 'Important Announcement Commands',
+                                    value: partc
+                                }
+                            ]
+                        }})
+                }
+                if (message == 'HELP ROLEINFO'){
+                    bot.sendMessage({
+                        to: channelID,
+                        message: '```md\nyo roleInfo {role}\n==================\n< role >\nThis can br a mention or ID of a role.\n< Purpose >\nThis will say the important information about a role.\n```'})
+                }
+                if (message == 'HELP PIN'){
+                    bot.sendMessage({
+                        to: channelID,
+                        message: '```md\nyo pin {message}\n================\n< message >\nThis message will be pinned along with the user that sent it.\n< Purpose >\nThis will pin an important message to a channel.\n```'})
+                }
+                if (message == 'HELP LEVEL'){
+                    bot.sendMessage({
+                        to: channelID,
+                        message: '```md\nyo level\n========\n< Purpose >\nThis will tell you your level and the tricks needed to advance in level.\n```'})
+                }
+                if (message == 'HELP HELP'){
+                    bot.sendMessage({
+                        to: channelID,
+                        message: '```md\nyo help {command}\n=================\n< command >\nPut the command in question here.\nLeaving this blank will list all commands.\n< Purpose >\nThis will show the syntax and purpose of the command.\n```'})
+                }
             break;
          }
      }
